@@ -26,7 +26,7 @@ public class ND_MainClass {
 	
 	public static Properties propertiesFile;
 	
-    public static ImageIcon iconND = new ImageIcon("NavigatorDefenderShield.png");
+    public static ImageIcon iconND = new ImageIcon("Icon-ND_Shield.png");
 	
 	static String osVersion = System.getProperty("os.name").toString(); // What OS type can be?
 

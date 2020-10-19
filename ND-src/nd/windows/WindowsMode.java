@@ -29,9 +29,9 @@ public class WindowsMode {
 
 				if (infectedFiles.equals("Scanning " + folderDownload + "\\" + downloadedFile + " found no threats.")) {
 					JOptionPane.showMessageDialog(null, ND_MainClass.language.getYourDownloadedFile() + "'" + downloadedFile + "'" +
-					ND_MainClass.language.getItHasNotViruses(), "BD", JOptionPane.INFORMATION_MESSAGE, ND_MainClass.iconND);
+					ND_MainClass.language.getItHasNotViruses(), "ND", JOptionPane.INFORMATION_MESSAGE, ND_MainClass.iconND);
 				} else {
-					JOptionPane.showMessageDialog(null, ND_MainClass.language.getDetectedVirusesOn() + downloadedFile + "!", "BD", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, ND_MainClass.language.getDetectedVirusesOn() + downloadedFile + "!", "ND", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}
