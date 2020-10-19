@@ -2,6 +2,7 @@ package nd.tools;
 
 public class TOOLS {
 
+	// This method checks system's locate and return your downloads directory.
 	public static String downloadsDir() {
 		
 		switch ( System.getProperty("user.country") ) {
