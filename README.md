@@ -1,4 +1,4 @@
-## **NavigatorDefender | AlphaVersion**
+# **NavigatorDefender | AlphaVersion**
 
 NavigatorDefender uses your antivirus to analize downloaded files from the Internet.
 

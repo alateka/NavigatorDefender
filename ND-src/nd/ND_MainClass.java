@@ -26,7 +26,7 @@ public class ND_MainClass {
 	
 	public static Properties propertiesFile;
 	
-    public static ImageIcon iconND = new ImageIcon("NavigatorDefenderShield.png");
+    public static ImageIcon iconND = new ImageIcon("Icon-ND_Shield.png");
 	
 	static String osVersion = System.getProperty("os.name").toString(); // What OS type can be?
 
@@ -46,21 +46,24 @@ public class ND_MainClass {
 		// (Path) object with the downloads directory.
 		Path dowloadDir = Paths.get(ND_MainClass.propertiesFile.getProperty("Downloads_directory"));
 		
-		// (WatchKey) object to register modify events on download directory
+		// (WatchKey) object to register modify events on download directory.
 		WatchKey key = dowloadDir.register(FileDownloaded, ENTRY_MODIFY);
 
 		byte eventsCount = 0;
 		
+		// This loop manages generated files from browser.
 		while (FileDownloaded.take() != null) {
 			
 			for (WatchEvent<?> event : key.pollEvents()) {
-
+				
+				// Browsers will generate temporary files during a download, so it have not to be scan.
 				if (event.context().toString().contains(".crdownload") 
 						|| event.context().toString().contains(".part")
 						|| event.context().toString().contains(".partial")
 						|| event.context().toString().contains(".opdownload")
 						|| event.context().toString().contains(".tmp")) {
 					
+				// If it is not a temporary file, it check what OS is.
 				} else if ( osVersion.contains("Linux") ) {
 					UnixMode.runClamAV(dowloadDir.toString(), event.context().toString());
 
@@ -77,6 +80,8 @@ public class ND_MainClass {
 			key.reset();
 		}
 	}	
+
+// =============================( Main Method )============================================================== //
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 
