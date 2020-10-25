@@ -1,3 +1,10 @@
+/** 
+Project: NavigatorDefender.
+ *  
+ * @author: ALATEKA 	
+ * @source: WindowsMode.java
+ * @version: v0.0.10-alpha
+ */
 package nd.windows;
 
 import java.awt.HeadlessException;
@@ -11,8 +18,12 @@ import nd.tools.TOOLS;
 
 public class WindowsMode {
 	
-// =============================( To Scan on Windows10 )============================================================== //
+// =============================( To work on Windows10 )============================================================== //
 
+	/**
+	 * Runs Windows Defender antivirus for check viruses.
+	 * @param void
+	 */
 	public static void runWindowsDefender(String folderDownload, String downloadedFile)
 	{
 		Process windowsDefender = null;

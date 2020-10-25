@@ -1,3 +1,10 @@
+/** 
+Project: NavigatorDefender.
+ *  
+ * @author: ALATEKA 	
+ * @source: UnixMode.java
+ * @version: v0.0.10-alpha
+ */
 package nd.unix;
 
 import java.awt.HeadlessException;
@@ -12,8 +19,12 @@ import nd.tools.TOOLS;
 public class UnixMode {
 	
 
-// =============================( To Scan on UNIX/UNIX-like )====================================================== //
+// =============================( To work on UNIX/UNIX-like )====================================================== //
 
+	/**
+	 * Runs ClamAV antivirus for check viruses.
+	 * @param void
+	 */
 	public static void runClamAV(String folderDownload, String downloadedFile) {
 
 		Process clamav = null;
