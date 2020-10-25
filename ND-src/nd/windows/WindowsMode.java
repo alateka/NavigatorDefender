@@ -1,40 +1,79 @@
+/** 
+Project: NavigatorDefender.
+ *  
+ * @author: ALATEKA 	
+ * @source: WindowsMode.java
+ * @version: v0.0.10-alpha
+ */
 package nd.windows;
 
+import java.awt.HeadlessException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import javax.swing.JOptionPane;
 
 import nd.ND_MainClass;
+import nd.tools.TOOLS;
 
 public class WindowsMode {
 	
-// =============================( To Scan on Windows10 )============================================================== //
+// =============================( To work on Windows10 )============================================================== //
 
-	public static void runWindowsDefender(String folderDownload, String downloadedFile) throws IOException, InterruptedException {
-
-		Process windowsDefender = Runtime.getRuntime()
-				.exec("\"C:\\Program Files\\Windows Defender\\MpCmdRun.exe\"  -Scan -ScanType 3 -File " + "\""
-						+ folderDownload + "\\" + downloadedFile + "\"");
+	/**
+	 * Runs Windows Defender antivirus for check viruses.
+	 * @param void
+	 */
+	public static void runWindowsDefender(String folderDownload, String downloadedFile)
+	{
+		Process windowsDefender = null;
+		try {
+			windowsDefender = Runtime.getRuntime()
+					.exec("\"C:\\Program Files\\Windows Defender\\MpCmdRun.exe\"  -Scan -ScanType 3 -File " + "\""
+							+ folderDownload + "\\" + downloadedFile + "\"");
+		} catch (IOException e) {
+			TOOLS.outException(e, "");
+			System.exit(1);
+		}
 		
-		windowsDefender.waitFor();
+		try {
+			windowsDefender.waitFor();
+		} catch (InterruptedException e) {
+			TOOLS.outException(e, "");
+			System.exit(1);
+		}
 		
 		BufferedReader windowsDefenderContent = new BufferedReader( new InputStreamReader(windowsDefender.getInputStream()));
 		
 		String infectedFiles;
 
-		while ((infectedFiles = windowsDefenderContent.readLine()) != null) {
-			
-			if (infectedFiles.contains("threats")) {
+		try {
+			while ((infectedFiles = windowsDefenderContent.readLine()) != null) {
+				
+				if (infectedFiles.contains("threats")) {
 
-				if (infectedFiles.equals("Scanning " + folderDownload + "\\" + downloadedFile + " found no threats.")) {
-					JOptionPane.showMessageDialog(null, ND_MainClass.language.getYourDownloadedFile() + "'" + downloadedFile + "'" +
-					ND_MainClass.language.getItHasNotViruses(), "ND", JOptionPane.INFORMATION_MESSAGE, ND_MainClass.iconND);
-				} else {
-					JOptionPane.showMessageDialog(null, ND_MainClass.language.getDetectedVirusesOn() + downloadedFile + "!", "ND", JOptionPane.ERROR_MESSAGE);
+					if (infectedFiles.equals("Scanning " + folderDownload + "\\" + downloadedFile + " found no threats.")) {
+						JOptionPane.showMessageDialog(null, ND_MainClass.language.getYourDownloadedFile() + "'" + downloadedFile + "'" +
+						ND_MainClass.language.getItHasNotViruses(), "ND", JOptionPane.INFORMATION_MESSAGE, ND_MainClass.iconND);
+					} else {
+						JOptionPane.showMessageDialog(null, ND_MainClass.language.getDetectedVirusesOn() + downloadedFile + "!", "ND", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			}
+		} catch (HeadlessException e) {
+			TOOLS.outException(e, "");
+			System.exit(1);
+			
+		} catch (IOException e) {
+			TOOLS.outException(e, "");
+			System.exit(1);
 		}
-		windowsDefenderContent.close();
+		try {
+			windowsDefenderContent.close();
+			
+		} catch (IOException e) {
+			TOOLS.outException(e, "");
+			System.exit(1);
+		}
 	}
 }
