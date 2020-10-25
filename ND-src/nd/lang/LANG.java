@@ -9,23 +9,24 @@ Project: NavigatorDefender.
 package nd.lang;
 
 public class LANG {
-	
+
 	private String propertiesFileGenerated;
 	private String NavigatorDefenderBackground;
 	private String yourDownloadedFile;
 	private String itHasNotViruses;
 	private String detectedVirusesOn;
-	
+
 	/**
 	 * Constructor
+	 * 
 	 * @param propertiesFileGenerated
 	 * @param downloadsDirectory
 	 * @param NavigatorDefenderBackground
 	 * @param itHasNotViruses
 	 * @param detectedVirusesOn
 	 */
-	public LANG(String propertiesFileGenerated, String NavigatorDefenderBackground,
-			String yourDownloadedFile, String itHasNotViruses, String detectedVirusesOn) {
+	public LANG(String propertiesFileGenerated, String NavigatorDefenderBackground, String yourDownloadedFile,
+			String itHasNotViruses, String detectedVirusesOn) {
 		this.propertiesFileGenerated = propertiesFileGenerated;
 		this.NavigatorDefenderBackground = NavigatorDefenderBackground;
 		this.yourDownloadedFile = yourDownloadedFile;
@@ -33,7 +34,8 @@ public class LANG {
 		this.detectedVirusesOn = detectedVirusesOn;
 	}
 	
-	//---------------------------( Getters & Setters )------------------------------------------------------------//
+
+	// -----------------( Getters & Setters )--------------------//
 
 	public String getPropertiesFileGenerated() {
 		return propertiesFileGenerated;

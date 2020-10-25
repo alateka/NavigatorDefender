@@ -8,7 +8,7 @@ Project: NavigatorDefender.
 package nd.tools;
 
 import javax.swing.JOptionPane;
-
+////////////////////////////////
 import nd.ND_MainClass;
 
 public class TOOLS {
@@ -38,6 +38,7 @@ public class TOOLS {
 	 * @param String message - Message to show
 	 */
 	public static void outException( Exception e, String message ) {
-		JOptionPane.showMessageDialog(null, message+"\nERROR ==> "+e.getMessage(), "NavigatorDefender", JOptionPane.ERROR_MESSAGE, ND_MainClass.iconND);
+		JOptionPane.showMessageDialog(null, message+"\nERROR ==> "+e.getMessage(), 
+				"NavigatorDefender", JOptionPane.ERROR_MESSAGE, ND_MainClass.iconND);
 	}
 }
