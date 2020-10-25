@@ -1,3 +1,11 @@
+/** 
+Project: NavigatorDefender.
+ *  
+ * @author: ALATEKA 	
+ * @source: LANG.java
+ * @version: v0.0.10-alpha
+ */
+
 package nd.lang;
 
 public class LANG {
@@ -24,6 +32,8 @@ public class LANG {
 		this.itHasNotViruses = itHasNotViruses;
 		this.detectedVirusesOn = detectedVirusesOn;
 	}
+	
+	//---------------------------( Getters & Setters )------------------------------------------------------------//
 
 	public String getPropertiesFileGenerated() {
 		return propertiesFileGenerated;
@@ -64,5 +74,4 @@ public class LANG {
 	public void setDetectedVirusesOn(String detectedVirusesOn) {
 		this.detectedVirusesOn = detectedVirusesOn;
 	}
-	
 }
