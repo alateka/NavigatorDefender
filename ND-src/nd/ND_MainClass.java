@@ -1,3 +1,10 @@
+/** 
+Project: NavigatorDefender.
+ *  
+ * @author: ALATEKA 	
+ * @source: ND_MainClass.java
+ * @version: v0.0.10-alpha
+ */
 package nd;
 
 import java.io.FileNotFoundException;
@@ -22,13 +29,17 @@ import nd.windows.WindowsMode;
 
 public class ND_MainClass {
 
-// =============================( Main Class )================================================================= //
+//=============================( Main Class )=================================================================//
 	
 	public static Properties propertiesFile;
 	
     public static ImageIcon iconND = new ImageIcon("Icon-ND_Shield.png");
-	
-	static String osVersion = System.getProperty("os.name").toString(); // What OS type can be?
+    
+    private static WatchService FileDownloaded;
+        
+    private static WatchKey key;
+
+	private static String osVersion = System.getProperty("os.name"); // What OS type can be?
 
 	public static LANG language = new LANG("A properties file will be generated.",
 			"NavigatorDefender is in background.\nIf you need to choose another directory, you will need to modify the properties file.",
@@ -36,62 +47,34 @@ public class ND_MainClass {
 			" it has not viruses",
 			"Detected Viruses on: ");
 	
-// =============================( File Detection -- WatchService )================================================================ //
 
-	public static void FileDetector() throws IOException, InterruptedException {
+	//=============================( Main Method )==============================================================//
 
-		// Object of type (WatchService) to watch registered objects for changes and events.
-		WatchService FileDownloaded = FileSystems.getDefault().newWatchService();
-		
-		// (Path) object with the downloads directory.
-		Path dowloadDir = Paths.get(ND_MainClass.propertiesFile.getProperty("Downloads_directory"));
-		
-		// (WatchKey) object to register modify events on download directory.
-		WatchKey key = dowloadDir.register(FileDownloaded, ENTRY_MODIFY);
-
-		byte eventsCount = 0;
-		
-		// This loop manages generated files from browser.
-		while (FileDownloaded.take() != null) {
+		public static void main(String[] args) {
 			
-			for (WatchEvent<?> event : key.pollEvents()) {
+	//---------------------------( Properties File )------------------------------------------------------------//
+			propertiesFile = new Properties();
+			
+			try { // If the ND.properties file exist, then it is going to load its settings.
 				
-				// Browsers will generate temporary files during a download, so it have not to be scan.
-				if (event.context().toString().contains(".crdownload") 
-						|| event.context().toString().contains(".part")
-						|| event.context().toString().contains(".partial")
-						|| event.context().toString().contains(".opdownload")
-						|| event.context().toString().contains(".tmp")) {
-					
-				// If it is not a temporary file, it check what OS is.
-				} else if ( osVersion.contains("Linux") ) {
-					UnixMode.runClamAV(dowloadDir.toString(), event.context().toString());
+				propertiesFile.load(new FileReader("ND.properties"));
+				
+			} catch (FileNotFoundException e) { // If the ND.properties file not exist, then will create it.
+				
+				JOptionPane.showMessageDialog(null, language.getPropertiesFileGenerated(),"NavigatorDefender", JOptionPane.INFORMATION_MESSAGE);
 
-				} else if ( osVersion.contains("Windows") ) {
+				if (osVersion.contains("Linux")) { // If it's Linux, the ND.properties file will add Downloads folder for GNU/Linux users.
+					propertiesFile.setProperty("Downloads_directory", System.getProperty("user.home") + "/" + TOOLS.downloadsDir());
+					propertiesFile.setProperty("LANG", System.getProperty("user.language"));
 					
-					eventsCount++;
-					
-					if ( eventsCount == 2 ) {
-						WindowsMode.runWindowsDefender(dowloadDir.toString(), event.context().toString());
-						eventsCount = 0;
-					}
+				} else if (osVersion.contains("Windows")) { // If it's Windows, then the ND.properties file will add Downloads folder for Windows users.
+					propertiesFile.setProperty("Downloads_directory", System.getProperty("user.home") + "\\" + TOOLS.downloadsDir());
+					propertiesFile.setProperty("LANG", System.getProperty("user.language"));
 				}
+			} catch (IOException e) {
+				TOOLS.outException(e, "");
+				System.exit(1);
 			}
-			key.reset();
-		}
-	}	
-
-// =============================( Main Method )============================================================== //
-
-	public static void main(String[] args) throws IOException, InterruptedException {
-
-// =============================( Properties File )============================================================== //
-		propertiesFile = new Properties();
-		
-		try { // If the ND.properties file exist, then it is going to load its settings.
-			
-			propertiesFile.load(new FileReader("ND.properties"));
-			
 			if ( propertiesFile.getProperty("LANG").equals("es")) {
 				
 				language.setPropertiesFileGenerated("Se generará un fichero de configuración");
@@ -105,40 +88,89 @@ public class ND_MainClass {
 				language.setItHasNotViruses(" no tiene virus.");
 				
 				language.setDetectedVirusesOn("Se han detectado virus en: ");
-				
 			}
 			
-		} catch (FileNotFoundException e) { // If the ND.properties file not exist, then will create.
-			
-	        JOptionPane.showMessageDialog(null, language.getPropertiesFileGenerated(), "NavigatorDefender", JOptionPane.INFORMATION_MESSAGE, iconND);
+	        JOptionPane.showMessageDialog(null, language.getNavigatorDefenderBackground(), "NavigatorDefender", JOptionPane.INFORMATION_MESSAGE, iconND);
+	     
+	        try {
+				propertiesFile.store(new FileOutputStream("ND.properties"), "\n Parámetros de configuración \n");
+				
+			} catch (FileNotFoundException e) {
+				TOOLS.outException(e, "");
+				System.exit(1);
+				
+			} catch (IOException e) {
+				TOOLS.outException(e, "");
+				System.exit(1);
+			}
+			// Because of OS type, This method will use UnixMode or WindowsMode.
+	        FileDetector();
+		}
+	
+	//------------------( File Detection -- WatchService )---------------------------------------------------------//
 
-			if (osVersion.contains("Linux")) { // If it's Linux, the ND.properties file will add Downloads folder for Linux users.
-				propertiesFile.setProperty("Downloads_directory", System.getProperty("user.home") + "/" + TOOLS.downloadsDir());
-				propertiesFile.setProperty("LANG", System.getProperty("user.language"));
-				
-			} else if (osVersion.contains("Windows")) { // If it's Windows, then the ND.properties file will add Downloads folder for Windows users.
-				propertiesFile.setProperty("Downloads_directory", System.getProperty("user.home") + "\\" + TOOLS.downloadsDir());
-				propertiesFile.setProperty("LANG", System.getProperty("user.language"));
-			}
+	/**
+	* 
+	* @param void
+	*/
+	public static void FileDetector() {
+
+		// Object of type (WatchService) to watch registered objects for changes and events.
+		try {
+			FileDownloaded = FileSystems.getDefault().newWatchService();
+			
 		} catch (IOException e) {
-			e.printStackTrace();
+			TOOLS.outException(e, "");
+			System.exit(1);
 		}
 		
-// =============================( Modes to use )================================================================ //
-						        
-        JOptionPane.showMessageDialog(null, language.getNavigatorDefenderBackground(), "NavigatorDefender", JOptionPane.INFORMATION_MESSAGE, iconND);
+		// (Path) object with the downloads directory.
+		Path dowloadDir = Paths.get(ND_MainClass.propertiesFile.getProperty("Downloads_directory"));
 		
-		// Because of OS type, will use a mode or other
+		// (WatchKey) object to register modify events on download directory.
+		
+		try {
+		key = dowloadDir.register(FileDownloaded, ENTRY_MODIFY);
+			
+		} catch (IOException e) {
+			TOOLS.outException(e, "");
+			System.exit(1);
+		}
 
-		if (osVersion.contains("Linux")) { // if it's Linux, then running unixFileDetector() method of the UnixMode class.
+		byte eventsCount = 0;
+		
+		// This loop manages generated files from browser.
+		try {
+			while (FileDownloaded.take() != null) {
+				
+				for (WatchEvent<?> event : key.pollEvents()) {
+					
+					// Browsers will generate temporary files during a download, so it have not to be scan.
+					if (event.context().toString().contains(".crdownload") 
+							|| event.context().toString().contains(".part")
+							|| event.context().toString().contains(".partial")
+							|| event.context().toString().contains(".opdownload")
+							|| event.context().toString().contains(".tmp")) {
+						
+					// If it is not a temporary file, it check what OS is.
+					} else if ( osVersion.contains("Linux") ) {
+						UnixMode.runClamAV(dowloadDir.toString(), event.context().toString());
 
-			propertiesFile.store(new FileOutputStream("ND.properties"), "Parámetros de configuración\n");
-			FileDetector();
-
-		} else if (osVersion.contains("Windows")) { // if it's Windows, then running windowsFileDetector() method of the WindowsMode class.
-
-			propertiesFile.store(new FileOutputStream("ND.properties"), "Parámetros de configuración\n");
-			FileDetector();
+					} else if ( osVersion.contains("Windows") ) {
+						
+						eventsCount++;
+						
+						if ( eventsCount == 2 ) {
+							WindowsMode.runWindowsDefender(dowloadDir.toString(), event.context().toString());
+							eventsCount = 0;
+						}
+					}
+				}
+				key.reset();
+			}
+		} catch (InterruptedException e) {
+			TOOLS.outException(e, "");
+			System.exit(1);
 		}
 	}
 }
