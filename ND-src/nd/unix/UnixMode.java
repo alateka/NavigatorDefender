@@ -12,24 +12,26 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import javax.swing.JOptionPane;
-
+////////////////////////////////
 import nd.ND_MainClass;
 import nd.tools.TOOLS;
 
 public class UnixMode {
 	
 
-// =============================( To work on UNIX/UNIX-like )====================================================== //
+// ================( To work on UNIX/UNIX-like )===================//
+
+	private static Process clamav;
 
 	/**
-	 * Runs ClamAV antivirus for check viruses.
+	 * Runs ClamAV for check viruses.
 	 * @param void
 	 */
 	public static void runClamAV(String folderDownload, String downloadedFile) {
 
-		Process clamav = null;
 		try {
-			clamav = Runtime.getRuntime().exec("clamscan " + folderDownload + "/" + downloadedFile);
+			clamav = Runtime.getRuntime().exec("clamscan " + 
+					 folderDownload + "/" + downloadedFile);
 			
 		} catch (IOException e) {
 			TOOLS.outException(e, "");
@@ -43,7 +45,8 @@ public class UnixMode {
 			TOOLS.outException(e, "");
 			System.exit(1);
 		}
-		BufferedReader clamContent = new BufferedReader(new InputStreamReader(clamav.getInputStream()));
+		BufferedReader clamContent = new BufferedReader(
+				new InputStreamReader(clamav.getInputStream()));
 
 		String infectedFiles;
 
@@ -53,10 +56,14 @@ public class UnixMode {
 				if (infectedFiles.contains("Infected files:")) {
 
 					if (infectedFiles.equals("Infected files: 0")) {
-						JOptionPane.showMessageDialog(null, ND_MainClass.language.getYourDownloadedFile() + "'" + downloadedFile + "'"
-						+ ND_MainClass.language.getItHasNotViruses(), "ND", JOptionPane.INFORMATION_MESSAGE, ND_MainClass.iconND);
+						JOptionPane.showMessageDialog(null, ND_MainClass.language.getYourDownloadedFile() + 
+								"'" + downloadedFile + "'" +
+								ND_MainClass.language.getItHasNotViruses(), "ND", 
+								JOptionPane.INFORMATION_MESSAGE, ND_MainClass.iconND);
+						
 					} else {
-						JOptionPane.showMessageDialog(null, ND_MainClass.language.getDetectedVirusesOn() + downloadedFile + "!", "ND", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, ND_MainClass.language.getDetectedVirusesOn() + downloadedFile + "!", 
+													  "ND", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}

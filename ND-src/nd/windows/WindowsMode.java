@@ -12,25 +12,28 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import javax.swing.JOptionPane;
-
+////////////////////////////////
 import nd.ND_MainClass;
 import nd.tools.TOOLS;
 
 public class WindowsMode {
 	
-// =============================( To work on Windows10 )============================================================== //
+// ======================( To work on Windows10 )======================//
 
+	private static Process windowsDefender;
+	
 	/**
-	 * Runs Windows Defender antivirus for check viruses.
+	 * Runs Windows Defender for check viruses.
 	 * @param void
 	 */
 	public static void runWindowsDefender(String folderDownload, String downloadedFile)
 	{
-		Process windowsDefender = null;
+		
 		try {
 			windowsDefender = Runtime.getRuntime()
-					.exec("\"C:\\Program Files\\Windows Defender\\MpCmdRun.exe\"  -Scan -ScanType 3 -File " + "\""
-							+ folderDownload + "\\" + downloadedFile + "\"");
+					.exec("\"C:\\Program Files\\Windows Defender\\MpCmdRun.exe\"  -Scan -ScanType 3 -File " +
+			        "\"" + folderDownload + "\\" + downloadedFile + "\"");
+			
 		} catch (IOException e) {
 			TOOLS.outException(e, "");
 			System.exit(1);
@@ -43,7 +46,8 @@ public class WindowsMode {
 			System.exit(1);
 		}
 		
-		BufferedReader windowsDefenderContent = new BufferedReader( new InputStreamReader(windowsDefender.getInputStream()));
+		BufferedReader windowsDefenderContent = new BufferedReader(
+				new InputStreamReader(windowsDefender.getInputStream()));
 		
 		String infectedFiles;
 
@@ -53,10 +57,13 @@ public class WindowsMode {
 				if (infectedFiles.contains("threats")) {
 
 					if (infectedFiles.equals("Scanning " + folderDownload + "\\" + downloadedFile + " found no threats.")) {
-						JOptionPane.showMessageDialog(null, ND_MainClass.language.getYourDownloadedFile() + "'" + downloadedFile + "'" +
-						ND_MainClass.language.getItHasNotViruses(), "ND", JOptionPane.INFORMATION_MESSAGE, ND_MainClass.iconND);
+						JOptionPane.showMessageDialog(null, ND_MainClass.language.getYourDownloadedFile() + 
+						"'" + downloadedFile + "'" + ND_MainClass.language.getItHasNotViruses(), 
+						"ND", JOptionPane.INFORMATION_MESSAGE, ND_MainClass.iconND);
+						
 					} else {
-						JOptionPane.showMessageDialog(null, ND_MainClass.language.getDetectedVirusesOn() + downloadedFile + "!", "ND", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, ND_MainClass.language.getDetectedVirusesOn() +
+								downloadedFile + "!", "ND", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
