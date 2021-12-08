@@ -21,10 +21,11 @@ public class WindowsMode {
 // ======================( To work on Windows10 )======================//
 
 	private static Process windowsDefender;
-	
-	/**
-	 * Runs Windows Defender for check viruses.
-	 * @param void
+
+	/** Runs Windows Defender for check viruses.
+	 *
+	 * @param folderDownload
+	 * @param downloadedFile
 	 */
 	public static void runWindowsDefender(String folderDownload, String downloadedFile)
 	{

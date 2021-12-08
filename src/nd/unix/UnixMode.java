@@ -23,9 +23,10 @@ public class UnixMode {
 
 	private static Process clamav;
 
-	/**
-	 * Runs ClamAV for check viruses.
-	 * @param void
+	/** Runs ClamAV for check viruses.
+	 *
+	 * @param folderDownload
+	 * @param downloadedFile
 	 */
 	public static void runClamAV(String folderDownload, String downloadedFile) {
 

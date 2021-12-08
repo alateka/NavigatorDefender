@@ -13,9 +13,8 @@ import nd.ND_MainClass;
 
 public class TOOLS {
 
-	/**
-	 * Checks system's locate and return your downloads directory.
-	 * @param void
+	/** Checks system's locate and return your downloads directory.
+	 *
 	 * @return - Downloads folder name
 	 */
 	public static String downloadsDir() {
@@ -34,10 +33,10 @@ public class TOOLS {
 	
 	/**
 	 * Shows a graphic message about exception error.
-	 * @param Exception e - Current exception
-	 * @param String message - Message to show
+	 * @param e - Current exception
+	 * @param message - Message to show
 	 */
-	public static void outException( Exception e, String message ) {
+	public static void outException(Exception e, String message ) {
 		JOptionPane.showMessageDialog(null, message+"\nERROR ==> "+e.getMessage(), 
 				"NavigatorDefender", JOptionPane.ERROR_MESSAGE, ND_MainClass.iconND);
 	}

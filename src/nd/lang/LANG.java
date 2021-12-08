@@ -16,12 +16,12 @@ public class LANG {
 	private String itHasNotViruses;
 	private String detectedVirusesOn;
 
-	/**
-	 * Constructor
-	 * 
+
+	/** Constructor
+	 *
 	 * @param propertiesFileGenerated
-	 * @param downloadsDirectory
 	 * @param NavigatorDefenderBackground
+	 * @param yourDownloadedFile
 	 * @param itHasNotViruses
 	 * @param detectedVirusesOn
 	 */
