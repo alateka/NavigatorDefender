@@ -1,6 +1,6 @@
 /** 
 Project: NavigatorDefender.
- *  
+ *
  * @author: ALATEKA 	
  * @source: LANG.java
  * @version: v0.0.10-alpha
@@ -18,7 +18,7 @@ public class LANG {
 
 
 	/** Constructor
-	 *
+	 * This class is used to add languages on GUI
 	 * @param propertiesFileGenerated
 	 * @param NavigatorDefenderBackground
 	 * @param yourDownloadedFile
