@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"nd.lang","l":"LANG"},{"p":"nd","l":"ND_MainClass"},{"p":"nd.tools","l":"TOOLS"},{"p":"nd.unix","l":"UnixMode"},{"p":"nd.windows","l":"WindowsMode"}]
