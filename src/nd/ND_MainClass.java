@@ -149,7 +149,7 @@ public class ND_MainClass {
 							|| event.context().toString().contains(".partial")
 							|| event.context().toString().contains(".opdownload")
 							|| event.context().toString().contains(".tmp")) {
-
+						System.out.println("Loading...");
 						// If it is not a temporary file, it check what OS is.
 					} else if (osVersion.contains("Linux")) {
 						UnixMode.runClamAV(dowloadDir.toString(), event.context().toString());
