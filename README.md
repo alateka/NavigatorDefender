@@ -6,5 +6,5 @@ NavigatorDefender uses your antivirus to analize downloaded files from the Inter
 
 | Antivirus Support | 
 | :------:|
-| Windows Defender | 
-| ClamAV | 
+| Windows Defender (On Windows) | 
+| ClamAV (Linux & Mac) | 
